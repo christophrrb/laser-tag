@@ -4,3 +4,4 @@ const serverStatic = require('serve-static');
 const port = process.env.PORT || process.env.port || 8080;
 
 connect().use(serverStatic(__dirname)).listen(port);
+var geomagnetism = require('geomagnetism');
