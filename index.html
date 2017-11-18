@@ -113,8 +113,8 @@
 
 		}
 		function recordLocation(){
-			MacBook.lat = document.getElementById('startLat');
-			MacBook.long = document.getElementById('startLon');
+			MacBook.lat = parseInt(document.getElementById('startLat'));
+			MacBook.long = parseInt(document.getElementById('startLon'));
 			console.log("si"); 
 		}
 		var Denis = new Player(0, 0, 0);
