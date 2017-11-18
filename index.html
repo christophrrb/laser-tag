@@ -5,6 +5,11 @@
 	<p id="startLon">1</p>
 	<p id="heading">1</p>
 	<script>
+		function iosLocation(position) {
+			latitude = position.coords.latitude;
+			longitude = position.coords.longitude;
+
+		}
 		function compassHeading(alpha, beta, gamma) {
 
 			// Convert degrees to radians
@@ -54,10 +59,7 @@
 				heading = event.webkitCompassHeading;
 				console.log("ios");
 				document.getElementById('heading').innerHTML = heading;
-				latitude = position.coords.latitude;
-				longitude = position.coords.longitude;
-				document.getElementById('startLat').innerHTML = latitude;
-				document.getElementById('startLon').innerHTML = longitude;
+				var watchId = navigator.geolocation.watchPosition(iosLocation);
 
 			} else {
 				console.log("no");
