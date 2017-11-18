@@ -48,10 +48,15 @@
 				heading = compassHeading(evt.alpha, evt.beta, evt.gamma);
 				console.log(heading);
 				document.getElementById('heading').innerHTML = heading;
+			} else if (event.webkitCompassHeading) {
+				heading = event.webkitCompassHeading;
+				console.log("ios");
+				document.getElementById('heading').innerHTML = heading;
 			}else{
-				heading = compassHeading(evt.alpha, evt.beta, evt.gamma);
-				console.log(heading);
+				console.log("no");
+				document.getElementById('heading').innerHTML = "heading";
 			}
+			
 
 			// Do something with 'heading'...
 
