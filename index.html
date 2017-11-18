@@ -11,7 +11,7 @@
 			if (event.webkitCompassHeading) {
 				heading = event.webkitCompassHeading;
 				console.log("ios");
-				document.getElementById('heading').innerHTML = heading;
+				document.getElementById('heading').innerHTML = heading.toFixed(0);
 			} else {
 				console.log("no");
 				document.getElementById('heading').innerHTML = "heading";
@@ -39,10 +39,10 @@
 
 				Pos = position;
 				myLocation = position;
-				document.getElementById('startLat').innerHTML = Pos.coords.latitude * (Math.PI / 180);
-				document.getElementById('startLon').innerHTML = Pos.coords.longitude * (Math.PI / 180);
-				Denis.lat = Pos.coords.latitude * (Math.PI / 180);
-				Denis.long = Pos.coords.longitude * (Math.PI / 180);
+				document.getElementById('startLat').innerHTML = (Pos.coords.latitude * (Math.PI / 180)).toFixed(7);
+				document.getElementById('startLon').innerHTML = (Pos.coords.longitude * (Math.PI / 180)).toFixed(7);
+				Denis.lat = (Pos.coords.latitude * (Math.PI / 180)).toFixed(7);
+				Denis.long = (Pos.coords.longitude * (Math.PI / 180)).toFixed(7);
 				console.log(Denis.lat + "" + Denis.long + "" + Denis.direction);
 				getDistance(Denis, Jack);
 				angleTo(Denis, Jack);
