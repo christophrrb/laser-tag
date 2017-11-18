@@ -41,8 +41,8 @@
 				myLocation = position;
 				document.getElementById('startLat').innerHTML = (Pos.coords.latitude * (Math.PI / 180)).toFixed(7);
 				document.getElementById('startLon').innerHTML = (Pos.coords.longitude * (Math.PI / 180)).toFixed(7);
-				Denis.lat = ((Pos.coords.latitude * (Math.PI / 180)).toFixed(7));
-				Denis.long = ((Pos.coords.longitude * (Math.PI / 180)).toFixed(7));
+				Denis.lat = parseInt((Pos.coords.latitude * (Math.PI / 180)).toFixed(7));
+				Denis.long = parseInt((Pos.coords.longitude * (Math.PI / 180)).toFixed(7));
 				console.log(Denis.lat + "" + Denis.long + "" + Denis.direction);
 				getDistance(Denis, Jack);
 				angleTo(Denis, Jack);
@@ -77,10 +77,7 @@
 
 		}
 		var Denis = new Player(0, 0, 0);
-		var Jack = new Player(0.5935904, -1.4742812, .001);
-		getDistance(Denis, Jack);
-		angleTo(Denis, Jack);
-
+		var Jack = new Player(0.5935904, -1.4742820, .001);
 	</script>
 </body>
 
