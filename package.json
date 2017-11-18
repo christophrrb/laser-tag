@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "connect": "^3.6.5",
+    "geomagnetism": "0.0.2",
     "serve-static": "^1.13.1"
   }
 }
