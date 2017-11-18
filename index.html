@@ -1,6 +1,8 @@
 <html>
 
 <body>
+	<p id="startLat">1</p>
+	<p id="startLon">1</p>
 	<p id="heading">1</p>
 	<script>
 		function compassHeading(alpha, beta, gamma) {
@@ -56,8 +58,6 @@
 				console.log("no");
 				document.getElementById('heading').innerHTML = "heading";
 			}
-			
-
 			// Do something with 'heading'...
 
 		}, false);
@@ -69,6 +69,29 @@
 				this.direction = direction;
 			}
 		}
+		document.getElementById('startLon').innerHTML = 3;
+		window.onload = function () {
+			var startPos;
+			var geoOptions = {
+				enableHighAccuracy: true
+			}
+
+			var geoSuccess = function (position) {
+				startPos = position;
+				document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+				document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+			};
+			var geoError = function (error) {
+				console.log('Error occurred. Error code: ' + error.code);
+				// error.code can be:
+				//   0: unknown error
+				//   1: permission denied
+				//   2: position unavailable (error response from location provider)
+				//   3: timed out
+			};
+
+			navigator.geolocation.watchPosition(geoSuccess, geoError, geoOptions);
+		};
 		function getDistance(player1, player2) {
 			var distanceLat = Math.abs(player1.lat - player2.lat);
 			console.log(distanceLat);
@@ -89,7 +112,7 @@
 
 		}
 		var Denis = new Player(.5920438712468366, -1.471965699643422, 0)
-		console.log(Denis.lat + "a" + Denis.long + "b" + Denis.direction);
+		console.log(Denis.lat + "" + Denis.long + "" + Denis.direction);
 		var Jack = new Player(.5920422887568039, -1.471964335145013, .001)
 		console.log(Jack.lat + "" + Jack.long + "" + Jack.direction);
 		getDistance(Denis, Jack);
