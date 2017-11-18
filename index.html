@@ -5,14 +5,6 @@
 	<p id="startLon">1</p>
 	<p id="heading">1</p>
 	<script>
-		var watchId = navigator.geolocation.watchPosition(iosLocation);
-		function iosLocation(position) {
-			latitude = position.coords.latitude;
-			longitude = position.coords.longitude;
-			document.getElementById('startLat').innerHTML = latitude;
-			document.getElementById('startLon').innerHTML = longitude;
-
-		}
 		function compassHeading(alpha, beta, gamma) {
 
 			// Convert degrees to radians
@@ -54,23 +46,22 @@
 
 			var heading = null;
 
-			if (evt.absolute === true && evt.alpha !== null) {
-				heading = compassHeading(evt.alpha, evt.beta, evt.gamma);
-				console.log("android");
-				document.getElementById('heading').innerHTML = heading;
-			} else if (event.webkitCompassHeading) {
+			if (event.webkitCompassHeading) {
 				heading = event.webkitCompassHeading;
 				console.log("ios");
 				document.getElementById('heading').innerHTML = heading;
-				watchId();
+			} else if (evt.absolute === true) {
+				heading = compassHeading(evt.alpha, evt.beta, evt.gamma);
+				console.log("android");
+				document.getElementById('heading').innerHTML = heading;
 			} else {
 				console.log("no");
 				document.getElementById('heading').innerHTML = "heading";
 			}
-			// Do something with 'heading'...
+			return heading;
 
 		}, false);
-		var radius = 6371009
+
 		class Player {
 			constructor(lat, long, direction) {
 				this.lat = lat;
@@ -78,17 +69,17 @@
 				this.direction = direction;
 			}
 		}
-		document.getElementById('startLon').innerHTML = 3;
+		var radius = 6371009
 		window.onload = function () {
-			var startPos;
+			var Pos;
 			var geoOptions = {
 				enableHighAccuracy: true
 			}
 
 			var geoSuccess = function (position) {
-				startPos = position;
-				document.getElementById('startLat').innerHTML = startPos.coords.latitude;
-				document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+				Pos = position;
+				document.getElementById('startLat').innerHTML = Pos.coords.latitude;
+				document.getElementById('startLon').innerHTML = Pos.coords.longitude;
 			};
 			var geoError = function (error) {
 				console.log('Error occurred. Error code: ' + error.code);
@@ -100,7 +91,7 @@
 			};
 
 			navigator.geolocation.watchPosition(geoSuccess, geoError, geoOptions);
-		};
+		}
 		function getDistance(player1, player2) {
 			var distanceLat = Math.abs(player1.lat - player2.lat);
 			console.log(distanceLat);
@@ -120,7 +111,7 @@
 			return angle;
 
 		}
-		var Denis = new Player(.5920438712468366, -1.471965699643422, 0)
+		var Denis = new Player(.5920438712468366, -1.471965699643422, heading)
 		console.log(Denis.lat + "" + Denis.long + "" + Denis.direction);
 		var Jack = new Player(.5920422887568039, -1.471964335145013, .001)
 		console.log(Jack.lat + "" + Jack.long + "" + Jack.direction);
