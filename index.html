@@ -44,8 +44,6 @@
 				angleTo(Denis, MacBook);
 				document.getElementById('distance').innerHTML = distVincenty(Denis.lat, Denis.long, MacBook.lat, MacBook.long);
 				document.getElementById('headingTo').innerHTML = angleTo(Denis, MacBook);
-				var info = geomagnetism.model().point([Denis.lat,Denis.long]);
-				console.log('declination:', info.decl);
 			};
 			var geoError = function (error) {
 				console.log('Error occurred. Error code: ' + error.code);
