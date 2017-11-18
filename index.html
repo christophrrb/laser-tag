@@ -6,6 +6,7 @@
 	<p id="heading">1</p>
 	<p id="distance">1</p>
 	<p id="headingTo">1</p>
+	<button type="button" onclick="recordLocation();">Set Point</button>
 	<script>
 		window.addEventListener('deviceorientation', function (evt) {
 			if (event.webkitCompassHeading) {
@@ -27,9 +28,6 @@
 				this.direction = direction;
 			}
 		}
-		var radius = 6371009
-		var distance;
-		var myLocation;
 		window.onload = function () {
 			var Pos;
 			var geoOptions = {
@@ -39,7 +37,6 @@
 			var geoSuccess = function (position) {
 
 				Pos = position;
-				myLocation = position;
 				document.getElementById('startLat').innerHTML = Pos.coords.latitude;
 				document.getElementById('startLon').innerHTML = Pos.coords.longitude;
 				Denis.lat = Pos.coords.latitude;
@@ -112,12 +109,13 @@
 
 
 		function angleTo(player1, player2) {
-			var distanceLat = radius * Math.sqrt(Math.pow((Math.abs(player1.lat - player2.lat)), 2));
-			var distanceLong = radius * Math.sqrt(Math.pow(Math.cos((player1.lat + player2.lat) / 2) * (Math.abs(player1.long - player2.long)), 2))
-			var angle = Math.atan(distanceLong / distanceLat) * (180 / Math.PI);
-			console.log(angle);
-			return angle;
+			return "nonfunctional";
 
+		}
+		function recordLocation(){
+			MacBook.lat = document.getElementById('startLat');
+			MacBook.long = document.getElementById('startLon');
+			console.log("si"); 
 		}
 		var Denis = new Player(0, 0, 0);
 		var MacBook = new Player(34.010154367456224, -84.47012596771538);
