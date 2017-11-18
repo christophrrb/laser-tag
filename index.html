@@ -84,7 +84,7 @@
 			};
 			var geoError = function (error) {
 				console.log('Error occurred. Error code: ' + error.code);
-				document.getElementById('error').innerHTML = error.code;
+				location.href = '/oops.html';
 				// error.code can be:
 				//   0: unknown error
 				//   1: permission denied
