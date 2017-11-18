@@ -5,9 +5,12 @@
 	<p id="startLon">1</p>
 	<p id="heading">1</p>
 	<script>
+		var watchId = navigator.geolocation.watchPosition(iosLocation);
 		function iosLocation(position) {
 			latitude = position.coords.latitude;
 			longitude = position.coords.longitude;
+			document.getElementById('startLat').innerHTML = latitude;
+			document.getElementById('startLon').innerHTML = longitude;
 
 		}
 		function compassHeading(alpha, beta, gamma) {
@@ -59,8 +62,7 @@
 				heading = event.webkitCompassHeading;
 				console.log("ios");
 				document.getElementById('heading').innerHTML = heading;
-				var watchId = navigator.geolocation.watchPosition(iosLocation);
-
+				watchId();
 			} else {
 				console.log("no");
 				document.getElementById('heading').innerHTML = "heading";
