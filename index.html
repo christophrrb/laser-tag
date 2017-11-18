@@ -49,8 +49,8 @@
 				console.log(heading);
 				document.getElementById('heading').innerHTML = heading;
 			}else{
-				console.log("no");
-				document.getElementById('heading').innerHTML = DeviceOrientationEvent.webkitCompassHeading;
+				heading = compassHeading(evt.alpha, evt.beta, evt.gamma);
+				console.log(heading);
 			}
 
 			// Do something with 'heading'...
