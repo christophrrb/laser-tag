@@ -4,6 +4,7 @@
 	<p id="startLat">1</p>
 	<p id="startLon">1</p>
 	<p id="heading">1</p>
+	<p id="error">noError</p>
 	<script>
 		function compassHeading(alpha, beta, gamma) {
 
@@ -83,6 +84,7 @@
 			};
 			var geoError = function (error) {
 				console.log('Error occurred. Error code: ' + error.code);
+				document.getElementById('error').innerHTML = error.code;
 				// error.code can be:
 				//   0: unknown error
 				//   1: permission denied
