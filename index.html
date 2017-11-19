@@ -124,7 +124,7 @@
 			var lng2 = player2.long
 			var dLon = this.toRad(lng2-lng1);
             var y = Math.sin(dLon) * Math.cos(this._toRad(lat2));
-            var x = Math.cos(this.toRad(lat1))*Math.sin(this.toRad(lat2)) - Math.sin(this.toRad(lat1))*Math.cos(this._toRad(lat2))*Math.cos(dLon);
+            var x = Math.cos(this.toRad(lat1))*Math.sin(this.toRad(lat2)) - Math.sin(this.toRad(lat1))*Math.cos(this.toRad(lat2))*Math.cos(dLon);
             var brng = this._toDeg(Math.atan2(y, x));
 			return ((brng + 360) % 360);
 		}
