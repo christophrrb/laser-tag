@@ -1,11 +1,11 @@
 <html>
 
 <body>
-	<p id="startLat">1</p>
-	<p id="startLon">1</p>
+	<p id="startLat">Initializing</p>
+	<p id="startLon">Please Stand By</p>
 	<p id="heading">1</p>
-	<p id="distance">1</p>
-	<p id="headingTo">1</p>
+	<p id="distance">Make Sure Location Data is enabled</p>
+	<p id="headingTo">Andoid is Currently Unsuported</p>
 	<button type="button" onclick="recordLocation();">Set Point</button>
 	<script>
 
@@ -45,12 +45,9 @@
 				angleTo(Denis, MacBook);
 				document.getElementById('distance').innerHTML = distVincenty(Denis.lat, Denis.long, MacBook.lat, MacBook.long);
 				document.getElementById('headingTo').innerHTML = angleTo(Denis, MacBook);
-				var info = geomagnetism.model().point([Denis.lat, Denis.long]);
-				console.log('declination:', info.decl);
 			};
 			var geoError = function (error) {
 				console.log('Error occurred. Error code: ' + error.code);
-				location.href = '/oops.html';
 				// error.code can be:
 				//   0: unknown error
 				//   1: permission denied
