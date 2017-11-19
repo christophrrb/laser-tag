@@ -121,12 +121,15 @@
 
 
 		function angleTo(player1, player2) {
-			var dLon = (player2.long - player1.long);
-			var y = Math.sin(dLon) * Math.cos(player2.lat);
-			var x = Math.cos(player1.lat) * Math.sin(player2.lat) - Math.sin(player1.lat) * Math.cos(player2.lat) * Math.cos(dLon);
-			var brng = this._toDeg(Math.atan2(y, x));
-			return 360 - ((brng + 360) % 360);
-
+			var lat1 = player1.lat
+			var lat2 = player2.lat
+			var lng1 = player1.long
+			var lng2 = player2.long
+			var dLon = this._toRad(lng2-lng1);
+            var y = Math.sin(dLon) * Math.cos(this._toRad(lat2));
+            var x = Math.cos(this._toRad(lat1))*Math.sin(this._toRad(lat2)) - Math.sin(this._toRad(lat1))*Math.cos(this._toRad(lat2))*Math.cos(dLon);
+            var brng = this._toDeg(Math.atan2(y, x));
+			return ((brng + 360) % 360);
 		}
 		function recordLocation() {
 			MacBook.lat = Denis.lat;
