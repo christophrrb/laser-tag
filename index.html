@@ -3,9 +3,9 @@
 <body>
 	<p id="startLat">Initializing</p>
 	<p id="startLon">Please Stand By</p>
-	<p id="heading">1</p>
-	<p id="distance">Make Sure Location Data is enabled</p>
-	<p id="headingTo">Andoid is Currently Unsuported</p>
+	<p id="heading"></p>
+	<p id="distance">Make Sure Location Data</p>
+	<p id="headingTo">is enabled</p>
 	<button type="button" onclick="recordLocation();">Set Point</button>
 	<script>
 
@@ -16,7 +16,7 @@
 				document.getElementById('heading').innerHTML = heading.toFixed(0);
 			} else {
 				console.log("no");
-				document.getElementById('heading').innerHTML = "heading";
+				document.getElementById('heading').innerHTML = "Your Device is Unsuported";
 			}
 			return heading;
 
