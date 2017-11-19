@@ -4,7 +4,7 @@ var eventEmitter = new events.EventEmitter();
 var server = require('http').createServer(handler)
 var io = require('socket.io')(server);
 var fs = require('fs');
-server.listen(8080);
+server.listen(process.env.PORT || process.env.port || 8080);
 
 function handler(req, res) {
 	fs.readFile(__dirname + '/index.html',
@@ -18,7 +18,6 @@ function handler(req, res) {
 			res.end(data);
 		});
 }
-
 io.on('connection', function (socket) {
 	socket.on('buttonPress', function (data) {
 		console.log(data);
