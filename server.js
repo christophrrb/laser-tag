@@ -5,24 +5,6 @@ var server = require('http').createServer(handler)
 var io = require('socket.io')(server);
 var fs = require('fs');
 server.listen(process.env.PORT || process.env.port || 8080);
-
-function handler(req, res) {
-	fs.readFile(__dirname + '/index.html',
-		function (err, data) {
-			if (err) {
-				res.writeHead(500);
-				return res.end('Error loading index.html');
-			}
-
-			res.writeHead(200);
-			res.end(data);
-		});
-}
-io.on('connection', function (socket) {
-	socket.on('buttonPress', function (data) {
-		console.log(data);
-	});
-});
 class Player {
 	constructor(lat, long, heading, name) {
 		this.lat = lat;
@@ -128,3 +110,20 @@ function trueHeading(player) {
 	player.trueHeading = player.heading + info.declination;
 	return player.trueHeading;
 }
+function handler(req, res) {
+	fs.readFile(__dirname + '/index.html',
+		function (err, data) {
+			if (err) {
+				res.writeHead(500);
+				return res.end('Error loading index.html');
+			}
+
+			res.writeHead(200);
+			res.end(data);
+		});
+}
+io.on('connection', function (socket) {
+	socket.on('buttonPress', function (data) {
+		console.log(data);
+	});
+});
