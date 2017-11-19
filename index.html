@@ -63,6 +63,16 @@
 		function toRad(n) {
 			return n * Math.PI / 180;
 		};
+		/**
+		 * Since not all browsers implement this we have our own utility that will
+		 * convert from radians into degrees
+		 *
+		 * @param rad - The radians to be converted into degrees
+		 * @return degrees
+		 */
+		_toDeg: function(rad) {
+			return rad * 180 / Math.PI;
+		},
 		function distVincenty(lat1, lon1, lat2, lon2) {
 			var a = 6378137,
 				b = 6356752.3142,
@@ -111,7 +121,11 @@
 
 
 		function angleTo(player1, player2) {
-			return "nonfunctional";
+			var dLon = (player2.long - player1.long);
+			var y = Math.sin(dLon) * Math.cos(player2.lat);
+			var x = Math.cos(player1.lat) * Math.sin(player2.lat) - Math.sin(player1.lat) * Math.cos(player2.lat) * Math.cos(dLon);
+			var brng = this._toDeg(Math.atan2(y, x));
+			return 360 - ((brng + 360) % 360);
 
 		}
 		function recordLocation() {
