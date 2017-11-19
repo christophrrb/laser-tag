@@ -18,6 +18,7 @@ function handler(req, res) {
 			res.end(data);
 		});
 }
+
 io.on('connection', function (socket) {
 	socket.on('buttonPress', function (data) {
 		console.log(data);
