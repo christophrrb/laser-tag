@@ -1,8 +1,7 @@
 <html>
 
 <body>
-	<p id="startLat">Initializing</p>
-	<p id="startLon">Please Stand By</p>
+	<p id="isPointing">Initializing</p>
 	<p id="heading"></p>
 	<p id="distance">Make Sure Location Data</p>
 	<p id="headingTo">is enabled</p>
@@ -14,8 +13,9 @@
 				heading = event.webkitCompassHeading;
 				console.log("ios");
 				document.getElementById('heading').innerHTML = heading.toFixed(0);
+				Denis.direction = heading;
+				document.getElementById('heading').innerHTML = isPointing(Denis, MacBook);
 			} else {
-				console.log("no");
 				document.getElementById('heading').innerHTML = "Your Device is Unsuported";
 			}
 			return heading;
@@ -38,8 +38,6 @@
 			var geoSuccess = function (position) {
 
 				Pos = position;
-				document.getElementById('startLat').innerHTML = Pos.coords.latitude;
-				document.getElementById('startLon').innerHTML = Pos.coords.longitude;
 				Denis.lat = Pos.coords.latitude;
 				Denis.long = Pos.coords.longitude;
 				angleTo(Denis, MacBook);
@@ -131,7 +129,31 @@
 		function recordLocation() {
 			MacBook.lat = Denis.lat;
 			MacBook.long = Denis.long;
-			console.log("si");
+		}
+		function isPointing(player1, player2){
+			var angle=angleTo(player1,player2);
+			if (angle > 15 && angle < 345){
+				if (angle-10<Denis.direction==Denis.direction<angle+10){
+					return true;
+				}else{
+					return false;
+				}
+			}else if (angle <= 15){
+				angle = angle + 15
+				if (angle-10<Denis.direction+ 15==Denis.direction+ 15<angle+10){
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				angle = angle - 15
+				if (angle-10<Denis.direction - 15==Denis.direction - 15<angle+10){
+					return true;
+				}else{
+					return false;
+				}
+			}
+
 		}
 		var Denis = new Player(0, 0, 0);
 		var MacBook = new Player(34.010154367456224, -84.47012596771538);
