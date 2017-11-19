@@ -4,6 +4,14 @@ var eventEmitter = new events.EventEmitter();
 var server = require('http').createServer(handler)
 var io = require('socket.io')(server);
 var fs = require('fs');
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+	host: "localhost",
+	user: "root",
+	password: "password"
+  });
+
 server.listen(process.env.PORT || process.env.port || 8080);
 class Player {
 	constructor(lat, long, heading, name) {
@@ -125,5 +133,13 @@ function handler(req, res) {
 io.on('connection', function (socket) {
 	socket.on('buttonPress', function (data) {
 		console.log(data);
+		con.connect(function(err) {
+			if (err) throw err;
+			console.log("Connected!");
+			con.query("select * from user", function (err, result) {
+			  if (err) throw err;
+			  console.log("Result: " + result);
+			});
+		  });
 	});
 });
