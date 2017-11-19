@@ -70,9 +70,9 @@
 		 * @param rad - The radians to be converted into degrees
 		 * @return degrees
 		 */
-		_toDeg: function(rad) {
-			return rad * 180 / Math.PI;
-		},
+		function _toDeg (n) {
+			return n * 180 / Math.PI;
+		};
 		function distVincenty(lat1, lon1, lat2, lon2) {
 			var a = 6378137,
 				b = 6356752.3142,
