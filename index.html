@@ -1,33 +1,32 @@
-<html>
+<html lang="en">
+
+<head>
+	<title>Laser Tag</title>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+	 crossorigin="anonymous">
+	<style>
+		.purple {
+			background-color: rgb(68, 43, 105);
+		}
+
+		.center {
+			text-align: center;
+			color: white;
+			margin: auto;
+		}
+	</style>
+
+</head>
 
 <body>
-	<p id="isPointing">Initializing</p>
-	<p id="heading"></p>
-	<p id="headingTo">is enabled</p>
-	<button type="button" onclick="recordLocation();">Set Point</button>
+	<script src="/socket.io/socket.io.js"></script>
 	<script>
-
-		window.addEventListener('deviceorientation', function (evt) {
-			if (event.webkitCompassHeading) {
-				heading = event.webkitCompassHeading;
-				console.log("ios");
-				document.getElementById('heading').innerHTML = heading.toFixed(0);
-				Denis.direction = heading;
-				document.getElementById('isPointing').innerHTML = isPointing(Denis, MacBook);
-			} else {
-				document.getElementById('heading').innerHTML = "Your Device is Unsuported";
-			}
-			return heading;
-
-		}, false);
-
-		class Player {
-			constructor(lat, long, direction) {
-				this.lat = lat;
-				this.long = long;
-				this.direction = direction;
-			}
-		}
+		var self = [];
+		var socket = io('http://localhost:8080');
 		window.onload = function () {
 			var Pos;
 			var geoOptions = {
@@ -37,10 +36,8 @@
 			var geoSuccess = function (position) {
 
 				Pos = position;
-				Denis.lat = Pos.coords.latitude;
-				Denis.long = Pos.coords.longitude;
-				//document.getElementById('distance').innerHTML = distVincenty(Denis.lat, Denis.long, MacBook.lat, MacBook.long);
-				document.getElementById('headingTo').innerHTML = angleTo(Denis, MacBook);
+				self[0] = Pos.coords.latitude;
+				self[1] = Pos.coords.longitude;
 			};
 			var geoError = function (error) {
 				console.log('Error occurred. Error code: ' + error.code);
@@ -53,102 +50,44 @@
 
 			navigator.geolocation.watchPosition(geoSuccess, geoError, geoOptions);
 		}
-		function toRad(n) {
-			return n * Math.PI / 180;
-		};
-		function toDeg (n) {
-			return n * 180 / Math.PI;
-		};
-		function distVincenty(lat1, lon1, lat2, lon2) {
-			var a = 6378137,
-				b = 6356752.3142,
-				f = 1 / 298.257223563, // WGS-84 ellipsoid params
-				L = toRad(lon2 - lon1),
-				U1 = Math.atan((1 - f) * Math.tan(toRad(lat1))),
-				U2 = Math.atan((1 - f) * Math.tan(toRad(lat2))),
-				sinU1 = Math.sin(U1),
-				cosU1 = Math.cos(U1),
-				sinU2 = Math.sin(U2),
-				cosU2 = Math.cos(U2),
-				lambda = L,
-				lambdaP,
-				iterLimit = 100;
-			do {
-				var sinLambda = Math.sin(lambda),
-					cosLambda = Math.cos(lambda),
-					sinSigma = Math.sqrt((cosU2 * sinLambda) * (cosU2 * sinLambda) + (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda) * (cosU1 * sinU2 - sinU1 * cosU2 * cosLambda));
-				if (0 === sinSigma) {
-					return 0; // co-incident points
-				};
-				var cosSigma = sinU1 * sinU2 + cosU1 * cosU2 * cosLambda,
-					sigma = Math.atan2(sinSigma, cosSigma),
-					sinAlpha = cosU1 * cosU2 * sinLambda / sinSigma,
-					cosSqAlpha = 1 - sinAlpha * sinAlpha,
-					cos2SigmaM = cosSigma - 2 * sinU1 * sinU2 / cosSqAlpha,
-					C = f / 16 * cosSqAlpha * (4 + f * (4 - 3 * cosSqAlpha));
-				if (isNaN(cos2SigmaM)) {
-					cos2SigmaM = 0; // equatorial line: cosSqAlpha = 0 (§6)
-				};
-				lambdaP = lambda;
-				lambda = L + (1 - C) * f * sinAlpha * (sigma + C * sinSigma * (cos2SigmaM + C * cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM)));
-			} while (Math.abs(lambda - lambdaP) > 1e-12 && --iterLimit > 0);
-
-			if (!iterLimit) {
-				return NaN; // formula failed to converge
-			};
-
-			var uSq = cosSqAlpha * (a * a - b * b) / (b * b),
-				A = 1 + uSq / 16384 * (4096 + uSq * (-768 + uSq * (320 - 175 * uSq))),
-				B = uSq / 1024 * (256 + uSq * (-128 + uSq * (74 - 47 * uSq))),
-				deltaSigma = B * sinSigma * (cos2SigmaM + B / 4 * (cosSigma * (-1 + 2 * cos2SigmaM * cos2SigmaM) - B / 6 * cos2SigmaM * (-3 + 4 * sinSigma * sinSigma) * (-3 + 4 * cos2SigmaM * cos2SigmaM))),
-				s = b * A * (sigma - deltaSigma);
-			return s.toFixed(3); // round to 1mm precision
-		};
-
-
-		function angleTo(player1, player2) {
-			var lat1 = player1.lat
-			var lat2 = player2.lat
-			var lng1 = player1.long
-			var lng2 = player2.long
-			var dLon = this.toRad(lng2-lng1);
-            var y = Math.sin(dLon) * Math.cos(this.toRad(lat2));
-            var x = Math.cos(this.toRad(lat1))*Math.sin(this.toRad(lat2)) - Math.sin(this.toRad(lat1))*Math.cos(this.toRad(lat2))*Math.cos(dLon);
-            var brng = this.toDeg(Math.atan2(y, x));
-			return ((brng + 360) % 360);
-		}
-		function recordLocation() {
-			MacBook.lat = Denis.lat;
-			MacBook.long = Denis.long;
-		}
-		function isPointing(player1, player2){
-			var angle=angleTo(player1,player2);
-			if (angle > 15 && angle < 345){
-				if (angle-10<Denis.direction==Denis.direction<angle+10){
-					return true;
-				}else{
-					return false;
-				}
-			}else if (angle <= 15){
-				angle = angle + 15
-				if (angle-10<Denis.direction+ 15==Denis.direction+ 15<angle+10){
-					return true;
-				}else{
-					return false;
-				}
-			}else{
-				angle = angle - 15
-				if (angle-10<Denis.direction - 15==Denis.direction - 15<angle+10){
-					return true;
-				}else{
-					return false;
-				}
+		function button() {
+			if (document.getElementById("input").value !== '') {
+				self[2] = document.getElementById("input").value
+				socket.emit('buttonPress', {self});
+			} else {
+				console.log(false);
 			}
-
 		}
-		var Denis = new Player(0, 0, 0);
-		var MacBook = new Player(0, 0, 0);
+
 	</script>
+	<div class="jumbotron purple">
+		<h1 class="display-3 center">Laser Tag</h1>
+		<br/>
+		<div class="col-lg-6 center">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="name" aria-label="username" id="input">
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="button" onclick="button();">Play!</button>
+				</span>
+			</div>
+		</div>
+		</p>
+	</div>
+	<div class="jumbotron">
+		<h2>
+			Extravagant Text
+		</h2>
+		<p>
+			Speeling errors
+		</p>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	 crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+	 crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+	 crossorigin="anonymous"></script>
 </body>
 
 </html>
