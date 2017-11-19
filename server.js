@@ -1,3 +1,4 @@
+var geomagnetism = require('geomagnetism');
 const connect = require('connect');
 const serverStatic = require('serve-static');
 
