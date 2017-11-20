@@ -8,25 +8,17 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
 	host: "us-cdbr-iron-east-05.cleardb.net",
 	user: "bcb2263ddffcb7",
-	password: "be231aa8"
-});
-connection.connect(function (err) {
-	if (!err) {
-		console.log("Database is connected ... \n\n");
-		connection.end();
-	} else {
-		console.log("Error connecting database ... \n\n");
-	}
+	password: "be231aa8",
+	database: "heroku_37fdbc5a8e62d55",
 });
 connection.on('error', function (error) {
 	console.error(error);
 });
 
+
 server.listen(process.env.PORT || process.env.port || 8080);
 class Player {
-	constructor(lat, long, heading, name) {
-		this.lat = lat;
-		this.long = long;
+	constructor(lat, lon) {
 		this.heading = heading;
 		this.trueHeading;
 		this.name = name
@@ -142,6 +134,19 @@ function handler(req, res) {
 }
 io.on('connect', function (socket) {
 	socket.on('buttonPress', function (data) {
-		console.log(data);
+		var values = data.values;
+
+		console.log("Connected!");
+		var sql = "INSERT INTO laserTagPlayers (lat, lon, name) VALUES ?"
+		var sqlValues = [
+			[values[0], values[1], values[2]]
+		];
+		connection.query(sql, [sqlValues], function (error, result) {
+			if (error) throw error;
+			console.log("Number of records inserted: " + result.affectedRows);
+		});
+
+
+
 	});
 });

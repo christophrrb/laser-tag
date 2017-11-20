@@ -51,9 +51,9 @@
 			navigator.geolocation.watchPosition(geoSuccess, geoError, geoOptions);
 		}
 		function button() {
-			if (document.getElementById("input").value !== '') {
+			if ((document.getElementById("input").value !== '')&&(self[0]!== null)) {
 				self[2] = document.getElementById("input").value
-				socket.emit('buttonPress', {self});
+				socket.emit('buttonPress', {'values': self});
 			} else {
 				console.log(false);
 			}
