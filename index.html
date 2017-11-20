@@ -18,6 +18,7 @@
 			color: white;
 			margin: auto;
 		}
+
 		.white {
 			background-color: white;
 		}
@@ -52,7 +53,7 @@
 				self.lon = Pos.coords.longitude;
 			};
 			var geoError = function (error) {
-				switch(error.code) {
+				switch (error.code) {
 					case error.PERMISSION_DENIED:
 						alert("User denied the request for Geolocation.");
 						break;
@@ -67,15 +68,20 @@
 						break;
 				}
 			};
-			navigator.geolocation.watchPosition(geoSuccess, geoError, geoOptions);
+			if (navigator.geolocation) {
+				var watchID = navigator.geolocation.watchPosition(geoSuccess, geoError, geoOptions);
+				var timeout = setTimeout(function () { navigator.geolocation.clearWatch(watchID); }, 5000);
+			} else {
+				alert("An unknown error occurred.");
+			}
 		}
 		function button() {
 			if ((document.getElementById("input").value !== '') && (self.lat !== null)) {
 				self.name = document.getElementById("input").value
 				socket.emit('buttonPress', { self });
-			} else if((self.lat !== null)){
+			} else if ((self.lat !== null)) {
 				alert("Please input a name");
-			}else{
+			} else {
 				alert("Your location data is currently unavailible. Please wait a few moments and try again.");
 			}
 		}
