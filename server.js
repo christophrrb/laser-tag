@@ -5,7 +5,7 @@ var server = require('http').createServer(handler)
 var io = require('socket.io')(server);
 var fs = require('fs');
 var mysql = require('mysql');
-var pool  = mysql.createPool({
+var pool = mysql.createPool({
 	host: "us-cdbr-iron-east-05.cleardb.net",
 	user: "bcb2263ddffcb7",
 	password: "be231aa8",
@@ -127,17 +127,23 @@ function handler(req, res) {
 }
 io.on('connect', function (socket) {
 	socket.on('buttonPress', function (data) {
-		console.log(data);
 		var sql = "INSERT INTO laserTagPlayers (lat, lon, name) VALUES ?"
 		var sqlValues = [
 			[data.self.lat, data.self.lon, data.self.name]
 		];
 		pool.query(sql, [sqlValues], function (error, result) {
-			if (error) throw error;
-			console.log("Number of records inserted: " + result.affectedRows);
+			if (error) {
+				console.error(error);
+			} else {
+				pool.query('SELECT id FROM laserTagPlayers WHERE name = ?', data.self.name, function (error, rows) {
+					if (error) {
+						console.error(error);
+					} else {
+						data.self.ID = rows[0].id;
+						console.log(data.self.ID)
+					}
+				});
+			}
 		});
-
-
-
 	});
 });

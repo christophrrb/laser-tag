@@ -56,11 +56,10 @@
 				//   2: position unavailable (error response from location provider)
 				//   3: timed out
 			};
-
 			navigator.geolocation.watchPosition(geoSuccess, geoError, geoOptions);
 		}
 		function button() {
-			if ((document.getElementById("input").value !== '') && (self[0] !== null)) {
+			if ((document.getElementById("input").value !== '') && (self.lat !== null)) {
 				self.name = document.getElementById("input").value
 				socket.emit('buttonPress', { self });
 			} else {
