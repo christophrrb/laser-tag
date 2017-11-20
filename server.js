@@ -5,25 +5,18 @@ var server = require('http').createServer(handler)
 var io = require('socket.io')(server);
 var fs = require('fs');
 var mysql = require('mysql');
-var connection = mysql.createConnection({
+var pool  = mysql.createPool({
 	host: "us-cdbr-iron-east-05.cleardb.net",
 	user: "bcb2263ddffcb7",
 	password: "be231aa8",
 	database: "heroku_37fdbc5a8e62d55",
 });
-connection.on('error', function (error) {
+pool.on('error', function (error) {
 	console.error(error);
 });
 
 
 server.listen(process.env.PORT || process.env.port || 8080);
-class Player {
-	constructor(lat, lon) {
-		this.heading = heading;
-		this.trueHeading;
-		this.name = name
-	}
-}
 function toRad(n) {
 	return n * Math.PI / 180;
 };
@@ -134,14 +127,12 @@ function handler(req, res) {
 }
 io.on('connect', function (socket) {
 	socket.on('buttonPress', function (data) {
-		var values = data.values;
-
-		console.log("Connected!");
+		console.log(data);
 		var sql = "INSERT INTO laserTagPlayers (lat, lon, name) VALUES ?"
 		var sqlValues = [
-			[values[0], values[1], values[2]]
+			[data.self.lat, data.self.lon, data.self.name]
 		];
-		connection.query(sql, [sqlValues], function (error, result) {
+		pool.query(sql, [sqlValues], function (error, result) {
 			if (error) throw error;
 			console.log("Number of records inserted: " + result.affectedRows);
 		});

@@ -25,7 +25,16 @@
 <body>
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
-		var self = [];
+		class Player {
+			constructor(ID, lat, lon, name) {
+				this.ID = ID
+				this.lat = lat;
+				this.lon = lon;
+				this.name = name
+
+			}
+		}
+		var self = new Player(null, null, null, null);
 		var socket = io();
 		window.onload = function () {
 			var Pos;
@@ -36,8 +45,8 @@
 			var geoSuccess = function (position) {
 
 				Pos = position;
-				self[0] = Pos.coords.latitude;
-				self[1] = Pos.coords.longitude;
+				self.lat = Pos.coords.latitude;
+				self.lon = Pos.coords.longitude;
 			};
 			var geoError = function (error) {
 				console.log('Error occurred. Error code: ' + error.code);
@@ -51,9 +60,9 @@
 			navigator.geolocation.watchPosition(geoSuccess, geoError, geoOptions);
 		}
 		function button() {
-			if ((document.getElementById("input").value !== '')&&(self[0]!== null)) {
-				self[2] = document.getElementById("input").value
-				socket.emit('buttonPress', {'values': self});
+			if ((document.getElementById("input").value !== '') && (self[0] !== null)) {
+				self.name = document.getElementById("input").value
+				socket.emit('buttonPress', { self });
 			} else {
 				console.log(false);
 			}
