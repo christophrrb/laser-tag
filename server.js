@@ -10,14 +10,6 @@ var connection = mysql.createConnection({
 	user: "denis.veller@gmail.com",
 	password: "Geronimo!11"
  });
- connection.connect(function(err){
-	if(!err) {
-		console.log("Database is connected ... \n\n");  
-	} else {
-		console.log("Error connecting database ... \n\n");  
-	}
-	});
-	
 server.listen(process.env.PORT || process.env.port || 8080);
 class Player {
 	constructor(lat, long, heading, name) {
@@ -137,6 +129,13 @@ function handler(req, res) {
 		});
 }
 io.on('connection', function (socket) {
+	connection.connect(function(err){
+		if(!err) {
+			console.log("Database is connected ... \n\n");  
+		} else {
+			console.log("Error connecting database ... \n\n");  
+		}
+		});
 	socket.on('buttonPress', function (data) {
 		console.log(data);
 	});
