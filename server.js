@@ -14,8 +14,6 @@ var pool = mysql.createPool({
 pool.on('error', function (error) {
 	console.error(error);
 });
-
-
 server.listen(process.env.PORT || process.env.port || 8080);
 function toRad(n) {
 	return n * Math.PI / 180;
@@ -114,8 +112,6 @@ function trueHeading(player) {
 	return player.trueHeading;
 }
 function handler(req, res) {
-	console.log(res);
-	console.log(req);
 	fs.readFile(__dirname + '/index.html',
 		function (err, data) {
 			if (err) {
