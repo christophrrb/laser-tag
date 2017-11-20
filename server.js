@@ -4,6 +4,11 @@ var eventEmitter = new events.EventEmitter();
 var server = require('http').createServer(handler)
 var io = require('socket.io')(server);
 var fs = require('fs');
+var connection = mysql.createConnection({
+	host: "mysql://bcb2263ddffcb7:be231aa8@us-cdbr-iron-east-05.cleardb.net/heroku_37fdbc5a8e62d55?reconnect=true",
+	user: "denis.veller@gmail.com",
+	password: "Geronimo!11"
+ });
 
 server.listen(process.env.PORT || process.env.port || 8080);
 class Player {
