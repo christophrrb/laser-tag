@@ -114,6 +114,8 @@ function trueHeading(player) {
 	return player.trueHeading;
 }
 function handler(req, res) {
+	console.log(res);
+	console.log(req);
 	fs.readFile(__dirname + '/index.html',
 		function (err, data) {
 			if (err) {
@@ -123,6 +125,7 @@ function handler(req, res) {
 
 			res.writeHead(200);
 			res.end(data);
+		
 		});
 }
 io.on('connect', function (socket) {
@@ -140,7 +143,7 @@ io.on('connect', function (socket) {
 						console.error(error);
 					} else {
 						data.self.ID = rows[0].id;
-						console.log(data.self.ID)
+						console.log(data.self.ID);
 					}
 				});
 			}
