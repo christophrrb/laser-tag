@@ -7,8 +7,8 @@ var fs = require('fs');
 var mysql = require('mysql');
 var connection = mysql.createConnection({
 	host: "mysql://bcb2263ddffcb7:be231aa8@us-cdbr-iron-east-05.cleardb.net/heroku_37fdbc5a8e62d55?reconnect=true",
-	user: "denis.veller@gmail.com",
-	password: "Geronimo!11"
+	user: "bcb2263ddffcb7",
+	password: "be231aa8"
 });
 connection.connect(function (err) {
 	if (!err) {
