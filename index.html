@@ -62,8 +62,10 @@
 			if ((document.getElementById("input").value !== '') && (self.lat !== null)) {
 				self.name = document.getElementById("input").value
 				socket.emit('buttonPress', { self });
-			} else {
-				console.log(false);
+			} else if((self.lat !== null)){
+				alert("Please input a name");
+			}else{
+				alert("Your location data is currently unavailible. Please wait a few moments and try again.");
 			}
 		}
 
