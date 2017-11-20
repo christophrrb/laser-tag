@@ -17,6 +17,10 @@ connection.connect(function (err) {
 		console.log("Error connecting database ... \n\n");
 	}
 });
+connection.on('error', function (error) {
+	console.error(error);
+});
+
 server.listen(process.env.PORT || process.env.port || 8080);
 class Player {
 	constructor(lat, long, heading, name) {
@@ -135,7 +139,7 @@ function handler(req, res) {
 			res.end(data);
 		});
 }
-io.on('connection', function (socket) {
+io.on('connect', function (socket) {
 	socket.on('buttonPress', function (data) {
 		console.log(data);
 	});
