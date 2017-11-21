@@ -121,7 +121,7 @@ function handler(req, res) {
 
 			res.writeHead(200);
 			res.end(data);
-		
+
 		});
 }
 io.on('connect', function (socket) {
@@ -140,6 +140,7 @@ io.on('connect', function (socket) {
 					} else {
 						data.self.ID = rows[0].id;
 						console.log(data.self.ID);
+						io.sockets.emit('chat', data); //Makes the data available for all clients.
 					}
 				});
 			}
